@@ -1,7 +1,9 @@
+import httpStatus from "http-status";
 import confiq from "../../app/confiq";
 import { TLoginUser, TUser } from "./user.interface";
 import { User } from "./user.model";
 import { createToken } from "./user.utilis";
+import AppError from "../../app/errors/AppError";
 
 const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
@@ -12,11 +14,11 @@ const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByEmail(payload.email);
 
   if (!user) {
-    throw new Error("This user is not found !");
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
   }
 
   if (!(await User.isPasswordMatched(payload?.password, user?.password)))
-    throw new Error("Password do not matched");
+  throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched');
 
   const jwtPayload = {
     userEmail: user.email,
