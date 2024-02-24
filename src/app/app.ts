@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 import router from '../routes'
+import globalErrorHandler from './middleware/globalErrorHandler'
 
 const app: Application = express()
 
@@ -15,6 +16,8 @@ app.use('/api', router)
 const getAController = (req: Request, res: Response) => {
   res.send('Welcome To SWOO')
 }
+
+app.use(globalErrorHandler);
 
 app.get('/', getAController)
 
