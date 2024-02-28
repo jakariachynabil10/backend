@@ -9,12 +9,10 @@ import { User } from "../../modules/user/user.model";
 import { JwtPayload } from "jsonwebtoken";
 
 // Define a new interface that extends the Request interface
-interface AuthRequest extends Request {
-  user?: JwtPayload & { role: string }; // Define the user property
-}
+
 
 const auth = (...requireRoles: TUserRole[]) => {
-  return catchAsync(async (req: AuthRequest, res: Response, next: NextFunction) => {
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
     if (!token) {
