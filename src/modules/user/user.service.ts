@@ -6,9 +6,21 @@ import { createToken } from "./user.utilis";
 import AppError from "../../app/errors/AppError";
 
 const createUserIntoDB = async (payload: TUser) => {
+  payload.role = "user"
   const result = await User.create(payload);
   return result;
 };
+
+const createSellerIntoDB = async (payload : TUser) => {
+  payload.role = "seller"
+  const result = await User.create(payload)
+  return result
+}
+const createAdminIntoDB = async (payload : TUser) => {
+  payload.role = "admin"
+  const result = await User.create(payload)
+  return result
+}
 
 const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByEmail(payload.email);
@@ -22,7 +34,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   const jwtPayload = {
     userEmail: user.email,
-    role: user.role,
+    role: user?.role,
   };
 
   const accessToken = createToken(
@@ -33,10 +45,13 @@ const loginUser = async (payload: TLoginUser) => {
 
   return {
     accessToken,
+    user
   };
 };
 
 export const UserServices = {
   createUserIntoDB,
+  createSellerIntoDB,
+  createAdminIntoDB,
   loginUser,
 };

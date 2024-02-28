@@ -15,17 +15,41 @@ const createUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const createSeller = catchAsync(async (req, res) => {
+  const data = req.body;
+
+  const result = await UserServices.createSellerIntoDB(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Seller is created succesfully",
+    data: result,
+  });
+});
+const createAdmin = catchAsync(async (req, res) => {
+  const data = req.body;
+
+  const result = await UserServices.createAdminIntoDB(data);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admin is created succesfully",
+    data: result,
+  });
+});
 
 const loginUser = catchAsync(async (req, res) => {
   const result = await UserServices.loginUser(req.body);
 
-  const {  accessToken } = result;
+  const {  accessToken , user} = result;
 
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User is logged in succesfully!',
+    message: `${user.role} is logged in succesfully!`,
     data: {
       accessToken
     },
@@ -34,5 +58,7 @@ const loginUser = catchAsync(async (req, res) => {
 
 export const UserController = {
   createUser,
+  createSeller,
+  createAdmin,
   loginUser
 };
