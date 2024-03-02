@@ -4,14 +4,13 @@ import sendResponse from "../../utils/sendResponse";
 import { ProductServices } from "./product.service";
 
 const createProduct = catchAsync(async (req, res) => {
-  const data = req.body;
-
-  const result = await ProductServices.CreateProductToDB(data);
+  console.log(req.body);
+  const result = await ProductServices.CreateProductToDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User is created succesfully",
+    message: "Product is created succesfully",
     data: result,
   });
 });
@@ -28,7 +27,7 @@ const getAllProduct = catchAsync(async (req, res) => {
 });
 
 const getSingleProduct = catchAsync(async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params;
   const result = await ProductServices.getSingleProductFromDB(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -41,5 +40,5 @@ const getSingleProduct = catchAsync(async (req, res) => {
 export const ProductControllers = {
   createProduct,
   getAllProduct,
-  getSingleProduct
+  getSingleProduct,
 };

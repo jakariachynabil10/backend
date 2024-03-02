@@ -2,6 +2,8 @@ import { ErrorRequestHandler } from "express";
 import { TErrorSources } from "../interface/error";
 import AppError from "../errors/AppError";
 import confiq from "../confiq";
+import { ZodError } from "zod";
+import handleZodError from "../errors/handleZodError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
@@ -30,6 +32,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         message: err?.message,
       },
     ];
+  } else if (err instanceof ZodError){
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
   }
 
   return res.status(statusCode).json({
