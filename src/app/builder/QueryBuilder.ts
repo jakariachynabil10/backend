@@ -22,6 +22,7 @@ class QueryBuilder<T> {
         ),
       });
     }
+    console.log(this)
     return this;
   }
 }

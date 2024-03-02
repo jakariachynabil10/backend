@@ -12,12 +12,17 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(product.find(), query).search(
     ProductSearchableFields
   );
-  console.log(productQuery)
   const result = await productQuery.modelQuery;
   return result;
 };
 
+const getSingleProductFromDB = async(id : string)=>{
+  const result = await product.findById(id)
+  return result
+}
+
 export const ProductServices = {
   CreateProductToDB,
   getAllProductFromDB,
+  getSingleProductFromDB
 };
